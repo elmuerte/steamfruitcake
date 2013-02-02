@@ -1,4 +1,9 @@
 <?php
+/**
+ * SteamFruitcake
+ * GNU Affero General Public License, version 3
+ * Copyright ${year} Michiel Hendriks <elmuerte@drunksnipers.com>
+ */
 
 define('GAME_SOURCE_UNKNOWN', 0);
 define('GAME_SOURCE_LIBRARY', 1);

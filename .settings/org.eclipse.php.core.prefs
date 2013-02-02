@@ -1,6 +1,6 @@
 eclipse.preferences.version=1
 include_path=0;/steamfruitcake/fuel\u00050;/steamfruitcake/public
-org.eclipse.php.core.phpDoc=false
+org.eclipse.php.core.phpDoc=true
 org.eclipse.php.core.taskCaseSensitive=enabled
 org.eclipse.php.core.taskPriorities=NORMAL,HIGH,NORMAL,NORMAL
 org.eclipse.php.core.taskTags=TODO,FIXME,XXX,@todo

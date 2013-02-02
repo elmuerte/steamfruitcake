@@ -1,4 +1,9 @@
 <?php
+/**
+ * SteamFruitcake
+ * GNU Affero General Public License, version 3
+ * Copyright ${year} Michiel Hendriks <elmuerte@drunksnipers.com>
+ */
 
 define('BASE_URL_ID', 'http://steamcommunity.com/id/');
 define('BASE_URL_PROFILE', 'http://steamcommunity.com/profiles/');

@@ -1,4 +1,9 @@
 <?php
+/**
+ * SteamFruitcake
+ * GNU Affero General Public License, version 3
+ * Copyright ${year} Michiel Hendriks <elmuerte@drunksnipers.com>
+ */
 
 class Controller_fruitcake_report extends Controller {
 
@@ -59,7 +64,7 @@ class Controller_fruitcake_report extends Controller {
 		if ($fruitcakeEntry == null) {
 			$fruitcakeEntry = Model_FruitcakeEntry::forge($key);
 		}
-		
+
 		if ((int) $fruitcakeEntry->count < $userGame->getQuantity()) {
 			$fruitcakeEntry->count = $userGame->getQuantity();
 			$fruitcakeEntry->timestamp = time();

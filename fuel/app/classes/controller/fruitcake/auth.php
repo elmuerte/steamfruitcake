@@ -1,4 +1,9 @@
 <?php
+/**
+ * SteamFruitcake
+ * GNU Affero General Public License, version 3
+ * Copyright 2013 Michiel Hendriks <elmuerte@drunksnipers.com>
+ */
 
 define('OPENID_SITE', $_SERVER['SERVER_NAME']);
 define('STEAM_OPENID_URL', 'http://steamcommunity.com/openid');
