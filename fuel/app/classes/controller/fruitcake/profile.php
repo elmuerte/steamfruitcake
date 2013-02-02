@@ -5,7 +5,7 @@
  * Copyright ${year} Michiel Hendriks <elmuerte@drunksnipers.com>
  */
 
-class Controller_fruitcake_profile extends Controller {
+class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 
 	public function action_index(){
 		$session = Session::instance();

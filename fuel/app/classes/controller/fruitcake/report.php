@@ -5,7 +5,7 @@
  * Copyright ${year} Michiel Hendriks <elmuerte@drunksnipers.com>
  */
 
-class Controller_fruitcake_report extends Controller {
+class Controller_Fruitcake_Report extends Controller_AbstractFruitcake {
 
 	public function get_index() {
 		return Response::redirect('fruitcake/profile');

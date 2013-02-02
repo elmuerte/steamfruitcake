@@ -9,7 +9,7 @@ define('OPENID_SITE', $_SERVER['SERVER_NAME']);
 define('STEAM_OPENID_URL', 'http://steamcommunity.com/openid');
 define('STEAM_OPENID_IDENTITY_REGEX', '#^http(s)?://steamcommunity.com/openid/id/([0-9]+)#i');
 
-class Controller_fruitcake_auth extends Controller {
+class Controller_Fruitcake_Auth extends Controller_AbstractFruitcake {
 
 	public function action_index(){
 		$session = Session::instance();

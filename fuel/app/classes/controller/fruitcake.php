@@ -5,7 +5,7 @@
  * Copyright ${year} Michiel Hendriks <elmuerte@drunksnipers.com>
  */
 
-class Controller_fruitcake extends Controller
+class Controller_Fruitcake extends Controller_AbstractFruitcake
 {
 	public function action_index()
 	{
