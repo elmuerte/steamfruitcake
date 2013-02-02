@@ -1,7 +1,11 @@
 <?php
 return array(
-	'_root_'  => 'welcome/index',  // The default route
-	'_404_'   => 'welcome/404',    // The main 404 route
-	
-	'hello(/:name)?' => array('welcome/hello', 'name' => 'hello'),
+		'_root_'  => 'fruitcake/index',
+		'_404_'   => 'fruitcake/404',
+
+		'appid(/:num)' => 'fruitcake/appid/$1',
+
+		'profile'  => 'fruitcake/profile',
+		'auth'  => 'fruitcake/auth',
+		'report'  => 'fruitcake/report',
 );

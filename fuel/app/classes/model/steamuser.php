@@ -2,7 +2,7 @@
 /**
  * SteamFruitcake
  * GNU Affero General Public License, version 3
- * Copyright ${year} Michiel Hendriks <elmuerte@drunksnipers.com>
+ * Copyright 2013 Michiel Hendriks <elmuerte@drunksnipers.com>
  */
 
 define('BASE_URL_ID', 'http://steamcommunity.com/id/');
