@@ -31,7 +31,7 @@ class Controller_Fruitcake extends Controller_AbstractFruitcake
 		}
 		$view->scoreBoard = $gameViews;
 
-		return Response::forge($view);
+		$this->template->content = $view;
 	}
 
 	protected function createScoreboardEntry(Model_Fruitcake $entry) {

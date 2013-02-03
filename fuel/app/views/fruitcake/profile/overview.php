@@ -1,5 +1,3 @@
-<html>
-<body>
 
 	<h1>
 		<img src="<?= $avatarIcon ?>" />
@@ -15,11 +13,8 @@
 		<?= $messages ?>
 	</p>
 
-	<?= $games ?>
+	<?php foreach ($games as $game) { echo $game; }  ?>
 
 	<form method="post">
 		<button type="submit" name="forceUpdate" value="1">Refresh data</button>
 	</form>
-
-</body>
-</html>

@@ -55,7 +55,8 @@ class Controller_Fruitcake_Report extends Controller_AbstractFruitcake {
 		$view->set('quantity', $userGame->getQuantity());
 		$view->set('inCollection', $userGame->inLibrary());
 		$view->set('inInventory', $userGame->inInventory());
-		return Response::forge($view);
+
+		$this->template->content = $view;
 	}
 
 	protected function registerCake($steamUser, $userGame) {
@@ -84,6 +85,7 @@ class Controller_Fruitcake_Report extends Controller_AbstractFruitcake {
 		$view->set('quantity', $userGame->getQuantity());
 		$view->set('inCollection', $userGame->inLibrary());
 		$view->set('inInventory', $userGame->inInventory());
-		return Response::forge($view);
+
+		$this->template->content = $view;
 	}
 }

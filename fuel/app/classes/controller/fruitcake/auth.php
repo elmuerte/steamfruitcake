@@ -31,7 +31,8 @@ class Controller_Fruitcake_Auth extends Controller_AbstractFruitcake {
 
 		if ($session->get('steamID', 0) == 0) {
 			// present login form
-			return Response::forge(View::forge('fruitcake/auth/login-form'));
+			$this->template->content = View::forge('fruitcake/auth/login-form');
+			return;
 		}
 		return Response::redirect('fruitcake/report');
 	}
@@ -46,6 +47,6 @@ class Controller_Fruitcake_Auth extends Controller_AbstractFruitcake {
 	public function action_logout() {
 		$session = Session::instance();
 		$session->destroy();
-		return Response::forge(View::forge('fruitcake/auth/loggedout'));
+		$this->template->content = View::forge('fruitcake/auth/loggedout');
 	}
 }

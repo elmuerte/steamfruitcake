@@ -1,7 +1,7 @@
 <div>
 	<h2>
-		<img src="<?= $logo ?>" />
-		<?= $name ?>
+		<a href="<?= Uri::create("appid/".$appID) ?>"> <img src="<?= $logo ?>" /> <?= $name ?>
+		</a>
 	</h2>
 	Count:
 	<?= $totalCount ?>

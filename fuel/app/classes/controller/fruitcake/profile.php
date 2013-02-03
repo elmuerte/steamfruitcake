@@ -64,7 +64,7 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 			$view->set('messages', 'Cannot retrieve game collecion inventory. The steam profile is not public.');
 		}
 
-		$games = "";
+		$games = array();
 		foreach ($steamUser->games as $userGame) {
 			$game = $userGame->getGame();
 			$gameview = View::forge('fruitcake/profile/game');
@@ -75,11 +75,12 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 			$gameview->set('quantity', $userGame->getQuantity());
 			$gameview->set('inCollection', $userGame->inLibrary());
 			$gameview->set('inInventory', $userGame->inInventory());
-			$games .= $gameview->render();
+
+			array_push($games, $gameview);
 		}
 
-		$view->set('games', $games, false);
+		$view->games = $games;
 
-		return Response::forge($view);
+		$this->template->content = $view;
 	}
 }

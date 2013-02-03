@@ -6,6 +6,7 @@ return array(
 		'appid(/:num)' => 'fruitcake/appid/$1',
 
 		'profile'  => 'fruitcake/profile',
-		'auth'  => 'fruitcake/auth',
 		'report'  => 'fruitcake/report',
+		'login'  => 'fruitcake/auth',
+		'logout'  => 'fruitcake/auth/logout',
 );

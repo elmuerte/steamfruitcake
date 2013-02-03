@@ -5,6 +5,18 @@
  * Copyright 2013 Michiel Hendriks <elmuerte@drunksnipers.com>
  */
 
-class Controller_AbstractFruitcake extends Controller {
+class Controller_AbstractFruitcake extends Controller_Template {
 
+	public function before()
+	{
+		parent::before();
+		$this->template->title = "SteamFruitcake";
+	}
+
+	public function after($response)
+	{
+		$response = parent::after($response);
+		// ...
+		return $response;
+	}
 }
