@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title><?= $title ?></title>
+<title><?= (strlen($title)>0)?$title." :: ":"" ?> SteamFruitcake&trade;</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?= Asset::css('bootstrap.css') ?>
 <style>
@@ -53,18 +53,21 @@ body {
 				<button class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 					<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
 				</button>
-				<a class="brand" href="<?= Uri::base() ?>">Steam<em>Fruitcake</em></a>
+				<a class="brand" href="<?= Uri::base() ?>"><strong>Steam</strong><em>Fruitcake</em>&trade;</a>
 				<div class="nav-collapse collapse">
 					<ul class="nav">
 						<li class="active"><a href="<?= Uri::base() ?>"><i class="icon-home icon-white"></i> Scoreboard</a></li>
 					</ul>
 					<form class="navbar-search pull-left">
-						<input type="text" class="search-query" placeholder="Find game">
+						<input type="text" class="search-query" placeholder="Find fruitcake">
 					</form>
 					<ul class="nav pull-right">
+						<?php if ($steamID === false): ?>
 						<li><a href="<?= Router::get('profile') ?>"><i class="icon-user icon-white"></i> Log in</a></li>
-						<li><a href="<?= Router::get('profile') ?>"><i class="icon-user icon-white"></i> Profile</a></li>
+						<?php else: ?>
+						<li><a href="<?= Router::get('profile') ?>"><i class="icon-user icon-white"></i> <?= $steamID ?></a></li>
 						<li><a href="<?= Router::get('logout') ?>"><i class="icon-off icon-white"></i> Logout</a></li>
+						<?php endif; ?>
 						<li><a href="<?= Router::get('about') ?>"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
 				</div>

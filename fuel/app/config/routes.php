@@ -4,6 +4,7 @@ return array(
 		'_404_'   => 'fruitcake/404',
 
 		'appid(/:num)' => 'fruitcake/appid/$1',
+		'about'  => 'fruitcake/about',
 
 		'profile'  => 'fruitcake/profile',
 		'report'  => 'fruitcake/report',

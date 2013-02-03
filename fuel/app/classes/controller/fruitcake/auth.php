@@ -23,18 +23,18 @@ class Controller_Fruitcake_Auth extends Controller_AbstractFruitcake {
 			} else {
 				if ($openid->validate()) {
 					if (preg_match(STEAM_OPENID_IDENTITY_REGEX, $openid->identity, $vars)) {
-						$session->set('steamID', $vars[2]);
+						$session->set('steamID64', $vars[2]);
 					}
 				}
 			}
 		}
 
-		if ($session->get('steamID', 0) == 0) {
+		if ($session->get('steamID64', 0) == 0) {
 			// present login form
 			$this->template->content = View::forge('fruitcake/auth/login-form');
 			return;
 		}
-		return Response::redirect('fruitcake/report');
+		return Response::redirect('fruitcake/profile');
 	}
 
 	public function post_index() {
@@ -45,8 +45,14 @@ class Controller_Fruitcake_Auth extends Controller_AbstractFruitcake {
 	}
 
 	public function action_logout() {
+		$this->template->title = "Log out";
+		$this->template->content = View::forge('fruitcake/auth/logout');
+	}
+
+	public function post_logout() {
 		$session = Session::instance();
 		$session->destroy();
+		$this->template->title = "Logged out";
 		$this->template->content = View::forge('fruitcake/auth/loggedout');
 	}
 }

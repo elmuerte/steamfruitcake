@@ -10,7 +10,7 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 	public function action_index(){
 		$session = Session::instance();
 
-		if ($session->get('steamID', 0) == 0) {
+		if ($session->get('steamID64', 0) == 0) {
 			// not authenticated
 			return Response::redirect('fruitcake/auth');
 		}
@@ -18,7 +18,7 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 		$steamUser = $session->get('steamUser', null);
 		if ($steamUser == null) {
 			$steamUser = new Model_SteamUser();
-			$steamUser->steamID64 = $session->get('steamID', 0);
+			$steamUser->steamID64 = $session->get('steamID64', 0);
 			$session->set('steamUser', $steamUser);
 		}
 

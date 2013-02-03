@@ -7,14 +7,20 @@
 
 class Controller_AbstractFruitcake extends Controller_Template {
 
-	public function before()
-	{
+	public function before() {
 		parent::before();
-		$this->template->title = "SteamFruitcake";
+		$this->template->title = "";
+		$this->template->steamID = false;
 	}
 
-	public function after($response)
-	{
+	public function after($response) {
+		// update menu when authenticated
+		$session = Session::instance();
+		$steamUser = $session->get('steamUser', null);
+		if ($steamUser != null) {
+			$this->template->steamID = $steamUser->steamID;
+		}
+
 		$response = parent::after($response);
 		// ...
 		return $response;

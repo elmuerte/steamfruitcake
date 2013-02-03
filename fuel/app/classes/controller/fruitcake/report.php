@@ -14,7 +14,7 @@ class Controller_Fruitcake_Report extends Controller_AbstractFruitcake {
 	public function post_index() {
 		$session = Session::instance();
 
-		if ($session->get('steamID', 0) == 0) {
+		if ($session->get('steamID64', 0) == 0) {
 			// not authenticated
 			return Response::redirect('fruitcake/auth');
 		}

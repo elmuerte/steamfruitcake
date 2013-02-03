@@ -5,10 +5,8 @@
  * Copyright 2013 Michiel Hendriks <elmuerte@drunksnipers.com>
  */
 
-class Controller_Fruitcake extends Controller_AbstractFruitcake
-{
-	public function action_index()
-	{
+class Controller_Fruitcake extends Controller_AbstractFruitcake {
+	public function action_index() {
 		try
 		{
 			$overview = Cache::get('scoreboard');
@@ -32,6 +30,11 @@ class Controller_Fruitcake extends Controller_AbstractFruitcake
 		$view->scoreBoard = $gameViews;
 
 		$this->template->content = $view;
+	}
+
+	public function action_about() {
+		$this->template->title ="About";
+		$this->template->content = View::forge("fruitcake/about");
 	}
 
 	protected function createScoreboardEntry(Model_Fruitcake $entry) {
