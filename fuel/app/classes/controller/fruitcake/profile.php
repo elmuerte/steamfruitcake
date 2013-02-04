@@ -35,7 +35,6 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 			}
 
 			if ($steamUser->isPublic()) {
-				// TODO: error handling
 				if ($steamUser->lastLibraryUpdate < 1)
 				{
 					Profiler::mark('Updating library');
@@ -50,19 +49,15 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 		}
 		catch (Exception $e) {
 			Debug::dump($e);
-			return false;
+			Message::error($e);
+		}
+
+		if (!$steamUser->isPublic()) {
+			Message::error('<h4>Non public profile!</h4>Unable to retrieve your game collection. Your profile needs to be temporarily public for Steam<em>Fruitcake</em>&trade; to gather information.');
 		}
 
 		$view = View::forge('fruitcake/profile/overview');
-		$view->set('messages', '');
-		$view->set('steamID', $steamUser->steamID);
-		$view->set('privacyState', $steamUser->privacyState);
-		$view->set('avatarIcon', $steamUser->avatarIcon);
-		$view->set('lastUpdate', strftime('%c', $steamUser->lastUpdate));
-
-		if (!$steamUser->isPublic()) {
-			$view->set('messages', 'Cannot retrieve game collecion inventory. The steam profile is not public.');
-		}
+		$view->profileDetails = $this->getProfileDetails($steamUser);
 
 		$games = array();
 		foreach ($steamUser->games as $userGame) {
@@ -78,9 +73,22 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 
 			array_push($games, $gameview);
 		}
-
 		$view->games = $games;
 
+		$this->template->title = "Profile";
 		$this->template->content = $view;
+	}
+
+	protected function getProfileDetails(Model_SteamUser $steamUser) {
+		$details = View::forge('fruitcake/profile/details');
+		$details->profile = $steamUser;
+		$details->set('steamID', $steamUser->steamID);
+		$details->set('realname', $steamUser->realname);
+		$details->set('privacyState', $steamUser->privacyState);
+		$details->set('avatarIcon', $steamUser->avatarIcon);
+		$details->set('avatarMedium', $steamUser->avatarMedium);
+		$details->set('avatarFull', $steamUser->avatarFull);
+		$details->set('lastUpdate', strftime('%c', $steamUser->lastUpdate));
+		return $details;
 	}
 }

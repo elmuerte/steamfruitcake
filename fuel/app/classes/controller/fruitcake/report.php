@@ -68,6 +68,7 @@ class Controller_Fruitcake_Report extends Controller_AbstractFruitcake {
 
 		if ((int) $fruitcakeEntry->count < $userGame->getQuantity()) {
 			$fruitcakeEntry->count = $userGame->getQuantity();
+			$fruitcakeEntry->source = $userGame->source;
 			$fruitcakeEntry->timestamp = time();
 			$fruitcakeEntry->save();
 		}

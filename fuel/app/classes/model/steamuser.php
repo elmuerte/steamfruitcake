@@ -26,9 +26,12 @@ class SteamUserException extends Exception {
 class Model_SteamUser extends Model {
 	public $steamID64;
 	public $steamID;
+	public $realname;
 	public $privacyState;
 	public $visibilityState;
 	public $avatarIcon;
+	public $avatarMedium;
+	public $avatarFull;
 
 	public $lastUpdate = 0;
 	public $lastLibraryUpdate = 0;
@@ -77,9 +80,12 @@ class Model_SteamUser extends Model {
 		}
 		$this->steamID64 = $data['steamID64'];
 		$this->steamID = $data['steamID'];
+		$this->realname = isset($data['realname'])?$data['realname']:'';
 		$this->privacyState = $data['privacyState'];
 		$this->visibilityState = $data['visibilityState'];
 		$this->avatarIcon = $data['avatarIcon'];
+		$this->avatarMedium = $data['avatarMedium'];
+		$this->avatarFull = $data['avatarFull'];
 		$this->lastUpdate = time();
 	}
 

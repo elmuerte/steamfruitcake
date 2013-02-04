@@ -5,6 +5,8 @@
 <title><?= (strlen($title)>0)?$title." :: ":"" ?> SteamFruitcake&trade;</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?= Asset::css('bootstrap.css') ?>
+<?= Asset::js('jquery-1.9.0.js') ?>
+<?= Asset::js('bootstrap.js') ?>
 <style>
 body {
 	/* 60px to make the container go all the way to the bottom of the topbar */
@@ -65,8 +67,15 @@ body {
 						<?php if ($steamID === false): ?>
 						<li><a href="<?= Router::get('profile') ?>"><i class="icon-user icon-white"></i> Log in</a></li>
 						<?php else: ?>
-						<li><a href="<?= Router::get('profile') ?>"><i class="icon-user icon-white"></i> <?= $steamID ?></a></li>
-						<li><a href="<?= Router::get('logout') ?>"><i class="icon-off icon-white"></i> Logout</a></li>
+						<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" role="button" href="<?= Router::get('profile') ?>"> <img
+								src="<?= $steamProfile->avatarIcon ?>" height="18" width="18"
+							/> <?= $steamID ?><b class="caret"></b>
+						</a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+								<li><a href="<?= Router::get('profile') ?>"><i class="icon-user icon"></i> Profile </a></li>
+								<li><a href="<?= Router::get('logout') ?>"><i class="icon-off icon"></i> Logout</a></li>
+							</ul>
+						</li>
 						<?php endif; ?>
 						<li><a href="<?= Router::get('about') ?>"><i class="icon-info-sign icon-white"></i> About</a></li>
 					</ul>
@@ -76,6 +85,10 @@ body {
 	</div>
 
 	<div class="container">
+
+		<div id="messages">
+			<?= $messages ?>
+		</div>
 
 		<?= $content ?>
 
