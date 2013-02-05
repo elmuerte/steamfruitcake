@@ -1,4 +1,6 @@
 <?php
+use Fuel\Core\Profiler;
+
 /**
  * SteamFruitcake
  * GNU Affero General Public License, version 3
@@ -9,6 +11,7 @@ define('BASE_URL_ID', 'http://steamcommunity.com/id/');
 define('BASE_URL_PROFILE', 'http://steamcommunity.com/profiles/');
 define('BASE_URL_INVENTORY_LOGO', 'http://cdn.steamcommunity.com/economy/image/');
 define('BASE_URL_APP', 'http://store.steampowered.com/app/');
+define('BASE_URL_API', 'http://api.steampowered.com/:cat/:func/:ver');
 
 define('STEAM_DATA_PROFILE', 'profile');
 define('STEAM_DATA_LIBRARY', 'library');
@@ -32,6 +35,7 @@ class Model_SteamUser extends Model {
 	public $avatarIcon;
 	public $avatarMedium;
 	public $avatarFull;
+	public $timecreated = -1;
 
 	public $lastUpdate = 0;
 	public $lastLibraryUpdate = 0;
@@ -75,18 +79,55 @@ class Model_SteamUser extends Model {
 			throw new SteamUserException("Unable to retrieve data from Steam.");
 		}
 		$data = Format::forge($data, 'xml')->to_array();
-		if (!is_numeric($data['steamID64'])) {
+
+		if (isset($data['steamID64']) && is_numeric($data['steamID64'])) {
+			$this->procCommunityProfile($data);
+		}
+		else if (isset($data['players']) && isset($data['players']['player'])) {
+			$this->procApiProfile($data['players']['player']);
+		}
+		else {
 			throw new SteamUserException("Steam returned invalid data");
 		}
+		$this->lastUpdate = time();
+	}
+
+	protected function procCommunityProfile($data) {
 		$this->steamID64 = $data['steamID64'];
 		$this->steamID = $data['steamID'];
 		$this->realname = isset($data['realname'])?$data['realname']:'';
 		$this->privacyState = $data['privacyState'];
-		$this->visibilityState = $data['visibilityState'];
 		$this->avatarIcon = $data['avatarIcon'];
 		$this->avatarMedium = $data['avatarMedium'];
 		$this->avatarFull = $data['avatarFull'];
-		$this->lastUpdate = time();
+		// <memberSince>July 1, 2009</memberSince> <-- parse
+	}
+
+	protected function procApiProfile($data) {
+		$this->steamID64 = $data['steamid'];
+		$this->steamID = $data['personaname'];
+		$this->realname = isset($data['realname'])?$data['realname']:'';
+		switch ((int) $data['communityvisibilitystate']) {
+			case 1:
+				$this->privacyState = 'private';
+				break;
+			case 2:
+				$this->privacyState = 'friendsonly';
+				break;
+			case 3:
+				$this->privacyState = 'public';
+				break;
+			default:
+				$this->privacyState = 'unknown';
+				break;
+			// usersonly
+			// friendsfriendsonly
+			// friendsonly
+		}
+		$this->avatarIcon = $data['avatar'];
+		$this->avatarMedium = $data['avatarmedium'];
+		$this->avatarFull = $data['avatarfull'];
+		$this->timecreated = isset($data['timecreated'])?(int) $data['timecreated']:0;
 	}
 
 	/**
@@ -248,15 +289,24 @@ class Model_SteamUser extends Model {
 	}
 
 	protected function retrieveSteamData($type) {
-		if (Fuel::$env == \Fuel::DEVELOPMENT) {
-			Profiler::console('Retrieving local data '.$type.' for '.$this->steamID64);
-			return File::read(DOCROOT.'cache/'.$this->steamID64.'.'.$type, true);
+		/*
+		 if (Fuel::$env == \Fuel::DEVELOPMENT) {
+		Profiler::console('Retrieving local data '.$type.' for '.$this->steamID64);
+		return File::read(DOCROOT.'cache/'.$this->steamID64.'.'.$type, true);
 		}
+		*/
 
 		$url = '';
 		switch ($type) {
 			case STEAM_DATA_PROFILE:
-				$url = BASE_URL_PROFILE.$this->steamID64.'?xml=1';
+				$url = $this->getSteamApiUri('ISteamUser', 'GetPlayerSummaries', 'v0002', array('steamids' => $this->steamID64));
+				if ($url === false) {
+					Profiler::console('Using Steam Community to retrieve profile');
+					$url = BASE_URL_PROFILE.$this->steamID64.'?xml=1';
+				}
+				else {
+					Profiler::console('Using Steam API to retrieve profile');
+				}
 				break;
 			case STEAM_DATA_LIBRARY:
 				$url = BASE_URL_PROFILE.$this->steamID64.'/games/?xml=1';
@@ -279,5 +329,15 @@ class Model_SteamUser extends Model {
 			throw new SteamUserException('Failed to retrieve Steam data. Response code: '.$response->status);
 		}
 		return $response->body();
+	}
+
+	protected function getSteamApiUri($cat, $function, $version, $args) {
+		Config::load('fruitcake', true);
+		if (strlen(Config::get('fruitcake.steam.api', '')) == 0) {
+			return false;
+		}
+		$args['format'] = 'xml';
+		$args['key'] = Config::get('fruitcake.steam.api', '');
+		return Uri::create(BASE_URL_API, array('cat' => $cat, 'func' => $function, 'ver' => $version), $args);
 	}
 }

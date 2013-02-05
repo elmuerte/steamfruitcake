@@ -9,6 +9,8 @@ class Controller_AbstractFruitcake extends Controller_Template {
 
 	public function before() {
 		parent::before();
+		Config::load('fruitcake', true);
+
 		$this->template->title = "";
 		$this->template->steamID = false;
 		$this->template->steamProfile = false;
