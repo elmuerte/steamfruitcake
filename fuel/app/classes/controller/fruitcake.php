@@ -7,18 +7,20 @@
 
 class Controller_Fruitcake extends Controller_AbstractFruitcake {
 	public function action_index() {
+		$year = (int) Config::get('fruitcake.year', 2013);
 		try
 		{
-			$overview = Cache::get('scoreboard');
+			$overview = Cache::get('scoreboard'.$year);
 			Profiler::mark("Using cached scoreboard");
 		}
 		catch (\CacheNotFoundException $e)
 		{
 			Profiler::mark("Fetching scoreboard from database");
-			$overview = DB::query('SELECT g.*, sum(e.count) AS totalCount, max(e.timestamp) AS lastVote FROM fruitcake_entry e LEFT JOIN games g ON g.appID = e.appID GROUP BY e.appID ORDER BY sum(e.count) DESC');
+			$overview = DB::query('SELECT g.*, sum(e.count) AS totalCount, max(e.timestamp) AS lastVote FROM fruitcake_entry e LEFT JOIN games g ON g.appID = e.appID WHERE e.year = '.
+					($year).' GROUP BY e.appID ORDER BY sum(e.count) DESC');
 			$overview = $overview->as_object('Model_Fruitcake')->execute()->as_array();
 			// cache for 1 minute
-			Cache::set('scoreboard', $overview, 60);
+			Cache::set('scoreboard'.$year, $overview, 60);
 		}
 
 		$view = View::forge('fruitcake/index');

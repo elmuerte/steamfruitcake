@@ -60,17 +60,22 @@ class Controller_Fruitcake_Report extends Controller_AbstractFruitcake {
 	}
 
 	protected function registerCake($steamUser, $userGame) {
-		$key = array('appID' => $userGame->appID, 'steamID64' => $steamUser->steamID64);
+		$key = array('year' => Config::get('fruitcake.year', 2013), 'appID' => $userGame->appID, 'steamID64' => $steamUser->steamID64);
 		$fruitcakeEntry = Model_FruitcakeEntry::find($key);
 		if ($fruitcakeEntry == null) {
 			$fruitcakeEntry = Model_FruitcakeEntry::forge($key);
 		}
 
-		if ((int) $fruitcakeEntry->count < $userGame->getQuantity()) {
+		if ((int) $fruitcakeEntry->count <= $userGame->getQuantity()) {
+			$fruitcakeEntry->anonymous = Input::param('anonymous', 1);
 			$fruitcakeEntry->count = $userGame->getQuantity();
 			$fruitcakeEntry->source = $userGame->source;
 			$fruitcakeEntry->timestamp = time();
 			$fruitcakeEntry->save();
+
+			if ($fruitcakeEntry->anonymous == 0) {
+				// TODO: update public user data
+			}
 		}
 		else {
 			// ...
