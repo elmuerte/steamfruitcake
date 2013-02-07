@@ -5,9 +5,10 @@
  * Copyright 2013 Michiel Hendriks <elmuerte@drunksnipers.com>
  */
 
-define('GAME_SOURCE_UNKNOWN', 0);
-define('GAME_SOURCE_LIBRARY', 1);
-define('GAME_SOURCE_INVENTORY', 2);
+define('SOURCE_UNKNOWN', 0);
+define('SOURCE_LIBRARY', 1);
+define('SOURCE_INVENTORY', 2);
+define('SOURCE_REDEEMED_KEY', 4);
 
 /**
  * A game the user "owns"
@@ -24,7 +25,7 @@ class Model_SteamUserGame extends Model {
 	/**
 	 * Location of this instance. This is a bit array.
 	 */
-	public $source = GAME_SOURCE_UNKNOWN;
+	public $source = SOURCE_UNKNOWN;
 
 	/**
 	 * Map of inventory id to amount
@@ -32,11 +33,11 @@ class Model_SteamUserGame extends Model {
 	protected $inventory = array();
 
 	public function inLibrary() {
-		return ($this->source & GAME_SOURCE_LIBRARY) != 0;
+		return ($this->source & SOURCE_LIBRARY) != 0;
 	}
 
 	public function inInventory() {
-		return ($this->source & GAME_SOURCE_INVENTORY) != 0;
+		return ($this->source & SOURCE_INVENTORY) != 0;
 	}
 
 	/**
@@ -64,7 +65,7 @@ class Model_SteamUserGame extends Model {
 	 * Clear the inventory data
 	 */
 	public function clearInventory() {
-		$this->source = $this->source & ~GAME_SOURCE_INVENTORY;
+		$this->source = $this->source & ~SOURCE_INVENTORY;
 		$this->inventory = array();
 	}
 
@@ -77,7 +78,7 @@ class Model_SteamUserGame extends Model {
 		if ((int) $amount <= 0) {
 			return;
 		}
-		$this->source = $this->source | GAME_SOURCE_INVENTORY;
+		$this->source = $this->source | SOURCE_INVENTORY;
 		$this->inventory[$id] = $amount;
 	}
 

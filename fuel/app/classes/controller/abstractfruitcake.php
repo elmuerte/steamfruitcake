@@ -8,6 +8,10 @@
 class Controller_AbstractFruitcake extends Controller_Template {
 
 	public function before() {
+		if (Input::is_ajax()) {
+			$this->template = 'ajax-template';
+		}
+
 		parent::before();
 		Config::load('fruitcake', true);
 

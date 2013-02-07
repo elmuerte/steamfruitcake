@@ -100,7 +100,7 @@ class Model_SteamUser extends Model {
 		$this->avatarIcon = $data['avatarIcon'];
 		$this->avatarMedium = $data['avatarMedium'];
 		$this->avatarFull = $data['avatarFull'];
-		// <memberSince>July 1, 2009</memberSince> <-- parse
+		$this->timecreated =  isset($data['memberSince'])?strtotime($data['memberSince']):0;
 	}
 
 	protected function procApiProfile($data) {
@@ -120,9 +120,9 @@ class Model_SteamUser extends Model {
 			default:
 				$this->privacyState = 'unknown';
 				break;
-			// usersonly
-			// friendsfriendsonly
-			// friendsonly
+				// usersonly
+				// friendsfriendsonly
+				// friendsonly
 		}
 		$this->avatarIcon = $data['avatar'];
 		$this->avatarMedium = $data['avatarmedium'];
@@ -141,7 +141,7 @@ class Model_SteamUser extends Model {
 
 		foreach ($this->games as $game)	{
 			if ($game->inLibrary())	{
-				$game->source = $game->source & ~GAME_SOURCE_LIBRARY;
+				$game->source = $game->source & ~SOURCE_LIBRARY;
 			}
 			if (!$game->inInventory()) {
 				unset($this->games[$game->appID]);
@@ -190,7 +190,7 @@ class Model_SteamUser extends Model {
 			$this->games[$appID] = $entry;
 		}
 
-		$entry->source = $entry->source | GAME_SOURCE_LIBRARY;
+		$entry->source = $entry->source | SOURCE_LIBRARY;
 		if ($entry->getGame() == null) {
 			$steamGame = Model_SteamGame::forge($gameEntry);
 			$steamGame->lastUpdate = time();
@@ -289,12 +289,10 @@ class Model_SteamUser extends Model {
 	}
 
 	protected function retrieveSteamData($type) {
-		/*
-		 if (Fuel::$env == \Fuel::DEVELOPMENT) {
-		Profiler::console('Retrieving local data '.$type.' for '.$this->steamID64);
-		return File::read(DOCROOT.'cache/'.$this->steamID64.'.'.$type, true);
+		if (Fuel::$env == \Fuel::DEVELOPMENT) {
+			Profiler::console('Retrieving local data '.$type.' for '.$this->steamID64);
+			return File::read(DOCROOT.'cache/'.$this->steamID64.'.'.$type, true);
 		}
-		*/
 
 		$url = '';
 		switch ($type) {

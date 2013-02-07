@@ -15,12 +15,13 @@
 				<span class="badge badge-important">!</span>
 				<?php endif;?>
 			</dd>
+			<dt>Member since</dt>
+			<dd>
+				<?= $timecreated ?>
+			</dd>
 			<dt>Last profile update</dt>
 			<dd>
 				<?= $lastUpdate ?>
-				<button id="refreshProfile" class="btn btn-mini" type="button">
-					<i class="icon-refresh"></i>
-				</button>
 			</dd>
 		</dl>
 	</div>

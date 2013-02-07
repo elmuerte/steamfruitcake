@@ -49,7 +49,7 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 		}
 		catch (Exception $e) {
 			Debug::dump($e);
-			Message::error($e);
+			Message::error($e->getMessage());
 		}
 
 		if (!$steamUser->isPublic()) {
@@ -60,6 +60,7 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 		$view->profileDetails = $this->getProfileDetails($steamUser);
 
 		$games = array();
+		/*
 		foreach ($steamUser->games as $userGame) {
 			$game = $userGame->getGame();
 			$gameview = View::forge('fruitcake/profile/game');
@@ -73,6 +74,7 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 
 			array_push($games, $gameview);
 		}
+		*/
 		$view->games = $games;
 
 		$this->template->title = "Profile";
@@ -88,7 +90,8 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 		$details->set('avatarIcon', $steamUser->avatarIcon);
 		$details->set('avatarMedium', $steamUser->avatarMedium);
 		$details->set('avatarFull', $steamUser->avatarFull);
-		$details->set('lastUpdate', strftime('%c', $steamUser->lastUpdate));
+		$details->set('lastUpdate', strftime('%B %e, %Y %H:%m', $steamUser->lastUpdate));
+		$details->set('timecreated', ($steamUser->timecreated > 0)?strftime('%B %e, %Y', $steamUser->timecreated):'unknown');
 		return $details;
 	}
 }
