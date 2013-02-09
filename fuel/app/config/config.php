@@ -261,7 +261,7 @@ return array(
 		 */
 		'packages'  => array(
 			'orm',
-			'message',
+			'messages',
 		),
 
 		/**

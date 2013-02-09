@@ -1,4 +1,6 @@
 <?php
+use Message\Message;
+
 /**
  * SteamFruitcake
  * GNU Affero General Public License, version 3
@@ -10,6 +12,7 @@ class Controller_AbstractFruitcake extends Controller_Template {
 	public function before() {
 		if (Input::is_ajax()) {
 			$this->template = 'ajax-template';
+			Message::info("this is an ajax request");
 		}
 
 		parent::before();
@@ -34,6 +37,9 @@ class Controller_AbstractFruitcake extends Controller_Template {
 
 		$response = parent::after($response);
 		// ...
+		if (Input::is_ajax()) {
+			$response->set_header("Content-Type", "text/xml");
+		}
 		return $response;
 	}
 }

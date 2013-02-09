@@ -24,13 +24,12 @@
 <script type="text/javascript">
 // <![CDATA[
 
-var updateLimit = 6*1000;
+var updateLimit = 2*1000;
 var lastUpdate = new Date().getTime();
 
 function mayRefresh() {
 	var curTime = new Date().getTime();
 	var diff = curTime - lastUpdate;
-	console.log(curTime, lastUpdate,  curTime - lastUpdate);
 	if (diff < updateLimit) {
 		var waitSec = (updateLimit - diff);
 		var msg = $('#delayAlert').clone().hide().alert();
@@ -43,7 +42,16 @@ function mayRefresh() {
 	return true;
 }
 
-function processProfileUpdate() {
+function processProfileUpdate(data) {
+	var msg = $($.parseHTML($('messages', data).text()));
+	var msgHolder = $('#messages');
+	msg.each(function() {
+		var jq = $(this).clone();
+		console.log(jq);
+		msgHolder.append(jq);
+		jq.fadeIn();
+	});
+	console.log(data);
 }
 
 function refreshProfile() {

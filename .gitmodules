@@ -1,0 +1,3 @@
+[submodule "fuel/packages/messages"]
+	path = fuel/packages/messages
+	url = https://github.com/elmuerte/FuelPHP-Messages.git
