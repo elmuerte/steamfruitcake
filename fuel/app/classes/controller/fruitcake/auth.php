@@ -19,7 +19,7 @@ class Controller_Fruitcake_Auth extends Controller_AbstractFruitcake {
 			Package::load('openid');
 			$openid = new LightOpenID(OPENID_SITE);
 			if($openid->mode == 'cancel') {
-				Message::error('Authentication cancelled.');
+				Messages::error('Authentication cancelled.');
 			} else {
 				if ($openid->validate()) {
 					if (preg_match(STEAM_OPENID_IDENTITY_REGEX, $openid->identity, $vars)) {

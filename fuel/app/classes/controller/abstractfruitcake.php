@@ -1,5 +1,5 @@
 <?php
-use Message\Message;
+use Messages\Messages;
 
 /**
  * SteamFruitcake
@@ -12,7 +12,7 @@ class Controller_AbstractFruitcake extends Controller_Template {
 	public function before() {
 		if (Input::is_ajax()) {
 			$this->template = 'ajax-template';
-			Message::info("this is an ajax request");
+			Messages::info("this is an ajax request");
 		}
 
 		parent::before();
@@ -25,7 +25,12 @@ class Controller_AbstractFruitcake extends Controller_Template {
 	}
 
 	public function after($response) {
-		$this->template->messages = Message::get();
+		if (Input::is_ajax()) {
+			$this->template->messages = Messages::get_xml();
+		}
+		else {
+			$this->template->messages = Messages::get();
+		}
 
 		// update menu when authenticated
 		$session = Session::instance();

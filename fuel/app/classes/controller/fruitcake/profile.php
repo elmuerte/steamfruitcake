@@ -49,11 +49,11 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 		}
 		catch (Exception $e) {
 			Debug::dump($e);
-			Message::error($e->getMessage());
+			Messages::error($e->getMessage());
 		}
 
 		if (!$steamUser->isPublic()) {
-			Message::error('<h4>Non public profile!</h4>Unable to retrieve your game collection. Your profile needs to be temporarily public for Steam<em>Fruitcake</em>&trade; to gather information.');
+			Messages::error('Non public profile!', 'Unable to retrieve your game collection. Your profile needs to be temporarily public for Steam<em>Fruitcake</em>&trade; to gather information.');
 		}
 
 		$view = View::forge('fruitcake/profile/overview');
@@ -61,18 +61,18 @@ class Controller_Fruitcake_Profile extends Controller_AbstractFruitcake {
 
 		$games = array();
 		/*
-		foreach ($steamUser->games as $userGame) {
-			$game = $userGame->getGame();
-			$gameview = View::forge('fruitcake/profile/game');
-			$gameview->set('appID', $game->appID);
-			$gameview->set('name', $game->name);
-			$gameview->set('logo', $game->logo);
-			$gameview->set('storeLink', $game->storeLink);
-			$gameview->set('quantity', $userGame->getQuantity());
-			$gameview->set('inCollection', $userGame->inLibrary());
-			$gameview->set('inInventory', $userGame->inInventory());
+		 foreach ($steamUser->games as $userGame) {
+		$game = $userGame->getGame();
+		$gameview = View::forge('fruitcake/profile/game');
+		$gameview->set('appID', $game->appID);
+		$gameview->set('name', $game->name);
+		$gameview->set('logo', $game->logo);
+		$gameview->set('storeLink', $game->storeLink);
+		$gameview->set('quantity', $userGame->getQuantity());
+		$gameview->set('inCollection', $userGame->inLibrary());
+		$gameview->set('inInventory', $userGame->inInventory());
 
-			array_push($games, $gameview);
+		array_push($games, $gameview);
 		}
 		*/
 		$view->games = $games;
