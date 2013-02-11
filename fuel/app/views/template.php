@@ -87,7 +87,7 @@ body {
 	<div class="container">
 
 		<div id="messages">
-			<?= $messages ?>
+			<?php foreach ($messages as $msg) echo $msg; ?>
 		</div>
 
 		<?= $content ?>

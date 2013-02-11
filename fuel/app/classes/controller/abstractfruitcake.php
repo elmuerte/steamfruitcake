@@ -1,5 +1,4 @@
 <?php
-use Messages\Messages;
 
 /**
  * SteamFruitcake
